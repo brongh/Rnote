@@ -1,8 +1,20 @@
 import React from "react";
 import { Button, Nav, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import { useAuthState, useAuthDispatch } from "../context/context";
+import { logout } from "../api/axiosCall";
+import { useHistory } from "react-router-dom";
 
 const NavBar = () => {
+  const dispatch = useAuthDispatch();
+  const userDetail = useAuthState();
+  const history = useHistory();
+
+  const handleLogout = () => {
+    logout(dispatch);
+    history.push("/");
+  };
+
   return (
     <>
       <Navbar bg="dark" variant="dark">
@@ -10,19 +22,26 @@ const NavBar = () => {
           <Navbar.Brand>Rnote</Navbar.Brand>
         </LinkContainer>
         <Nav className="mr-auto">
-          <LinkContainer to="/main">
-            <Nav.Link>Home</Nav.Link>
-          </LinkContainer>
+          {userDetail.token ? (
+            <>
+              <LinkContainer to="/main">
+                <Nav.Link>Your Notes</Nav.Link>
+              </LinkContainer>
+            </>
+          ) : null}
         </Nav>
-        <LinkContainer to="/login">
-          <Button>Login</Button>
-        </LinkContainer>
-        <LinkContainer to="/signup">
-          <Button>Sign Up</Button>
-        </LinkContainer>
-        <LinkContainer to="/">
-          <Button>Logout</Button>
-        </LinkContainer>
+        {userDetail.token ? (
+          <Button onClick={handleLogout}>Logout</Button>
+        ) : (
+          <>
+            <LinkContainer to="/login">
+              <Button>Login</Button>
+            </LinkContainer>
+            <LinkContainer to="/signup">
+              <Button>Sign Up</Button>
+            </LinkContainer>
+          </>
+        )}
       </Navbar>
     </>
   );
