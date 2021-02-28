@@ -3,7 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useForm } from "react-hook-form";
 import { loginUser } from "../api/axiosCall";
-import { useAuthState, useAuthDispatch } from "../context/context";
+import { useAuthDispatch } from "../context/context";
 import { useHistory } from "react-router";
 
 const Login = () => {

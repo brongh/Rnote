@@ -10,6 +10,7 @@ from rest_framework_simplejwt.views import (
 router = routers.DefaultRouter()
 router.register(r'notes', views.NotesViewSet)
 router.register(r'users', views.UserViewSet)
+router.register(r'notesuser', views.NotesUserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

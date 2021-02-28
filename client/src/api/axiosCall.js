@@ -7,12 +7,10 @@ export const loginUser = async (dispatch, loginPayload) => {
     dispatch({ type: "REQUEST_LOGIN" });
     let response = await axios.post(`${BASEURL}token/`, loginPayload);
     let res = await response;
-
     if (res.data) {
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
-      console.log(res.data.refresh);
-      //   localStorage.setItem("token", res.data.access);
       localStorage.setItem("refresh", res.data.refresh);
+      dispatch({ type: "MK", payload: loginPayload.password });
       return res.data;
     }
     dispatch({ type: "LOGIN_ERROR", error: res.errors });
@@ -51,5 +49,26 @@ export const getAccessToken = async (dispatch) => {
 
 export const signUp = async (newUser) => {
   let res = await axios.post(`${BASEURL}users/`, newUser);
+  return res;
+};
+
+export const postNote = async (id) => {
+  let res = await axios.post(`${BASEURL}notes/`, { user_id: id });
+  return res;
+};
+
+export const getNotes = async (id) => {
+  let res = await axios.get(`${BASEURL}notesuser/${id}/`);
+  return res;
+};
+
+export const getOneNote = (id) => {
+  let res = axios.get(`${BASEURL}notes/${id}/`);
+  return res;
+};
+
+export const editOneNote = (id, data) => {
+  console.log(id, data);
+  let res = axios.put(`${BASEURL}notes/${id}/`, data);
   return res;
 };
