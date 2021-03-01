@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { editOneNote } from "../api/axiosCall";
 import { useAuthState, useNoteContext } from "../context/context";
 import { decryptData, encryptData } from "../encryption/action";
+
+const ParseContent = ({ value = [], onChange }) => {
+  const [text, setText] = useState(value.join("\n"));
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+
+    setText(value);
+    onChange(value.split("\n"));
+  };
+
+  return <textarea onChange={handleChange} value={text} />;
+};
 
 const NoteDetail = ({ value }) => {
   const authState = useAuthState();
@@ -13,14 +26,20 @@ const NoteDetail = ({ value }) => {
   const noteID = useNoteContext();
   const id = noteID.noteID;
 
-  const { register, handleSubmit, getValues } = useForm();
+  const { register, handleSubmit, control } = useForm();
+  //   {
+  //   defaultValue: {
+  //     title: value.title || "",
+  //     content: value.content || "new post",
+  //   },
+  // }
   const saveNote = async () => {
-    const title = getValues("title");
-    const content = getValues("content");
-    const res = await encryptData({ title, content }, MK);
-    const inputData = { user_id, ...res };
-    const response = await editOneNote(id, inputData);
-    console.error(response);
+    // const title = getValues("title");
+    // const content = getValues("content");
+    // const res = await encryptData({ title, content }, MK);
+    // const inputData = { user_id, ...res };
+    // const response = await editOneNote(id, inputData);
+    // console.error(response);
   };
 
   useEffect(() => {
@@ -66,21 +85,11 @@ const NoteDetail = ({ value }) => {
               style={{ width: "100%" }}
               ref={register}
             >
-              {details.title ? details.title : null}
+              {details.title}
             </input>
           </div>
-          <div style={{ height: "100%" }}>
-            <label for="content" />
-            <textarea
-              id="content"
-              name="content"
-              rows="40"
-              style={{ width: "100%", height: "100%" }}
-              ref={register}
-            >
-              {details.content ? details.content : null}
-            </textarea>
-          </div>
+          <label>Content</label>
+          <Controller name="content" as={ParseContent} control={control} />
         </form>
       </div>
     </>

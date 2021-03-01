@@ -3,9 +3,7 @@ import { masterKey } from "../encryption/masterkey";
 
 let token = "";
 
-let mkEncoded = localStorage.getItem("mk") || "";
-let mk = JSON.parse(mkEncoded);
-
+let mk = JSON.parse(localStorage.getItem("mk")) || "";
 
 let userDetails = token ? jwt(token) : "";
 

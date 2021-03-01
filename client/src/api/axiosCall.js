@@ -17,14 +17,14 @@ export const loginUser = async (dispatch, loginPayload) => {
     return;
   } catch (error) {
     console.log(error);
-    dispatch({ type: "LOGIN_ERROR", error: error.response.data.detail });
+    dispatch({ type: "LOGIN_ERROR", error: error });
   }
 };
 
 export const logout = (dispatch) => {
   dispatch({ type: "LOGOUT" });
   localStorage.removeItem("refresh");
-  localStorage.removeItem('mk')
+  localStorage.removeItem("mk");
   //   localStorage.removeItem("token");
 };
 
@@ -44,7 +44,7 @@ export const getAccessToken = async (dispatch) => {
     return;
   } catch (error) {
     console.log(error);
-    dispatch({ type: "LOGIN_ERROR", error: error.response.data.detail });
+    dispatch({ type: "LOGIN_ERROR", error: error });
   }
 };
 
