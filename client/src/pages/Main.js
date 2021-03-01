@@ -14,8 +14,7 @@ const Main = () => {
   const authState = useAuthState();
   const id = authState.userDetails.user_id;
   const MK = authState.mk;
-  const noteContext = useNoteContext();
-  const note = noteContext.noteID;
+  const status = useNoteContext();
   const change = useChangeContext();
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -53,12 +52,14 @@ const Main = () => {
       setIsLoading(true);
     };
     grabAllNotes(id);
-  }, [isLoading, note]);
+  }, [isLoading, status]);
 
   return (
     <div className="notepage">
       <div>Add need post</div>
-      <div><NoteContainer value={data} /></div>
+      <div>
+        <NoteContainer value={data} />
+      </div>
     </div>
   );
 };

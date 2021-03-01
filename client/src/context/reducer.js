@@ -16,15 +16,15 @@ export const initialState = {
 };
 
 export const secondState = {
-  noteID: "",
+  status: "",
 };
 
 export const SecondReducer = (secondState, action) => {
   switch (action.type) {
-    case "READ_NOTE":
+    case "STATUS_CHANGE":
       return {
         ...secondState,
-        noteID: action.payload,
+        status: Math.random(),
       };
 
     default:

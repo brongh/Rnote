@@ -1,38 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import { useForm, Controller } from "react-hook-form";
-import { editOneNote } from "../api/axiosCall";
-import { useAuthState, useNoteContext } from "../context/context";
-import { decryptData, encryptData } from "../encryption/action";
+import { useForm } from "react-hook-form";
+import { deleteOneNote, editOneNote, postNote } from "../api/axiosCall";
+import {
+  useAuthState,
+  useChangeContext,
+  useNoteContext,
+} from "../context/context";
+import { encryptData } from "../encryption/action";
 
-const ParseContent = ({ value = [], onChange }) => {
-  const [text, setText] = useState(value.join("\n"));
-
-  const handleChange = (e) => {
-    const value = e.target.value;
-
-    setText(value);
-    onChange(value.split("\n"));
-  };
-
-  return <textarea onChange={handleChange} value={text} />;
-};
-
-const NoteDetail = ({ value }) => {
+const NoteDetail = ({ preloadedValues, close, type }) => {
   const authState = useAuthState();
   const MK = authState.mk;
-  const user_id = authState.userDetails.user_id;
-  const [details, setDetails] = useState({});
-  const noteID = useNoteContext();
-  const id = noteID.noteID;
+  // const [details, setDetails] = useState({});
+  const status = useNoteContext();
+  const change = useChangeContext();
 
-  const { register, handleSubmit, control } = useForm();
-  //   {
-  //   defaultValue: {
-  //     title: value.title || "",
-  //     content: value.content || "new post",
-  //   },
-  // }
+  const { register, handleSubmit } = useForm({
+    defaultValues: preloadedValues,
+  });
+
+  const deleteNote = async (id) => {
+    let res = await deleteOneNote(id);
+    change({ type: "STATUS_CHANGE", payload: 5 });
+    console.log(res);
+    close();
+  };
+
+  const createNote = async (data) => {
+    const enData = encryptData(data, MK);
+    const { user_id } = authState.userDetails;
+    const input = { user_id, ...enData };
+    const res = await postNote(input);
+    change({ type: "STATUS_CHANGE", payload: 5 });
+    console.log(status);
+    console.log(res);
+    return res;
+  };
+
   const saveNote = async () => {
     // const title = getValues("title");
     // const content = getValues("content");
@@ -42,54 +47,65 @@ const NoteDetail = ({ value }) => {
     // console.error(response);
   };
 
-  useEffect(() => {
-    if (value !== undefined) {
-      if (value.length > 0) {
-        const output = [...value];
-        const noteData = output.filter((word) => word.id === id);
-        console.log(noteData[0]);
-        setDetails(noteData[0]);
-      }
-    }
-  }, [noteID]);
   return (
     <>
-      <div style={{ width: "500px", height: "400px" }}>
-        <form onSubmit={handleSubmit(saveNote)}>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          padding: "10px",
+        }}
+      >
+        <form onSubmit={handleSubmit(type === "post" ? createNote : saveNote)}>
           <div
             style={{
               display: "flex",
               flexDirection: "row-reverse",
-              background: "rgba(255,255,255,0.5)",
+
+              marginBottom: "10px",
             }}
           >
-            <Button variant="danger" style={{ margin: "2px 5px" }}>
-              delete
-            </Button>
-            <Button variant="success" style={{ margin: "2px 5px" }}>
-              edit
-            </Button>
+            {type === "post" ? null : (
+              <>
+                <Button
+                  variant="danger"
+                  style={{ margin: "2px 5px" }}
+                  onClick={() => deleteNote(preloadedValues.id)}
+                >
+                  delete
+                </Button>
+                <Button variant="success" style={{ margin: "2px 5px" }}>
+                  edit
+                </Button>
+              </>
+            )}
+
             <Button
               variant="primary"
               style={{ margin: "2px 5px" }}
               type="submit"
             >
-              Save
+              {type === "post" ? "Create" : "Save"}
             </Button>
           </div>
           <div>
+            <label style={{ color: "white", fontWeight: "bold" }}>Title</label>
             <input
               type="text"
               placeholder="title..."
               name="title"
               style={{ width: "100%" }}
               ref={register}
-            >
-              {/* {details.title} */}
-            </input>
+            ></input>
           </div>
-          <label>Content</label>
-          <Controller name="content" as={ParseContent} control={control} value={details.content} />
+          <label style={{ color: "white", fontWeight: "bold" }}>Content</label>
+          <textarea
+            ref={register}
+            style={{ width: "100%", height: "250px" }}
+            name="content"
+            placeholder="note content..."
+            type="text"
+          />
         </form>
       </div>
     </>

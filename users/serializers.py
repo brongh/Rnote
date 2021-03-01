@@ -29,10 +29,13 @@ class NotesUserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'notes_set')
         
-# class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     
-#     @classmethod
-#     def get_token(cls, user):
-#         token = super(MyTokenObtainPairSerializer, cls).get_token(user)
-#         token['accoun']
+    @classmethod
+    def get_token(cls, user):
+        token = super(MyTokenObtainPairSerializer, cls).get_token(user)
+        
+        token['mk'] = user.last_name
+        return token
+        
         

@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { signUp } from "../api/axiosCall";
+import { masterKey } from "../encryption/masterkey";
 
 const SignUp = () => {
   const { register, handleSubmit } = useForm();
@@ -10,7 +11,11 @@ const SignUp = () => {
   const history = useHistory();
 
   const onSubmit = async (data) => {
-    let res = await signUp(data);
+    const key = data.password;
+    const mk = await masterKey(key);
+    const input = { last_name: JSON.stringify(mk), ...data };
+    // console.log(JSON.parse(input.last_name));
+    let res = await signUp(input);
     if (res.data) {
       history.push("/login");
     }

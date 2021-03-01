@@ -53,8 +53,8 @@ export const signUp = async (newUser) => {
   return res;
 };
 
-export const postNote = async (id) => {
-  let res = await axios.post(`${BASEURL}notes/`, { user_id: id });
+export const postNote = async (data) => {
+  let res = await axios.post(`${BASEURL}notes/`, data);
   return res;
 };
 
@@ -71,5 +71,10 @@ export const getOneNote = (id) => {
 export const editOneNote = (id, data) => {
   console.log(id, data);
   let res = axios.put(`${BASEURL}notes/${id}/`, data);
+  return res;
+};
+
+export const deleteOneNote = (id) => {
+  let res = axios.delete(`${BASEURL}notes/${id}/`);
   return res;
 };

@@ -10,17 +10,20 @@ module.exports = {
 
     const cipher = crypto.createCipheriv("aes-256-gcm", masterkey.key, iv);
 
-    const encrypted = Buffer.concat([
-      cipher.update(text, "hex"),
-      cipher.final(),
-    ]);
+    const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
 
     const tag = cipher.getAuthTag();
 
-    return Buffer.concat([masterkey.salt, iv, tag, encrypted]).toString("base64");
+    return Buffer.concat([masterkey.salt, iv, tag, encrypted]).toString(
+      "base64"
+    );
   },
 
   decrypt: function (encdata, masterkey) {
+    if (encdata === undefined) {
+      return;
+    }
+    console.log(encdata);
     const bData = Buffer.from(encdata, "base64");
 
     const salt = bData.slice(0, 16);
@@ -28,7 +31,7 @@ module.exports = {
     const tag = bData.slice(28, 44);
     const text = bData.slice(44);
 
-    const key = crypto.pbkdf2Sync(masterkey, salt, 100000, 32, "sha256");
+    const key = crypto.pbkdf2Sync(masterkey.key, salt, 100000, 32, "sha256");
 
     const decipher = crypto.createDecipheriv("aes-256-gcm", key, iv);
     decipher.setAuthTag(tag);
