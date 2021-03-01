@@ -9,9 +9,8 @@ export const encryptData = (data, password) => {
 };
 
 export const decryptData = async (data, password) => {
-  console.table({ data, password });
   const title = await decrypt(data.title, password);
   const content = await decrypt(data.content, password);
-  console.table({ title, content });
+
   return { title, content };
 };

@@ -3,13 +3,13 @@ import { masterKey } from "../encryption/masterkey";
 
 let token = "";
 
-let mk = JSON.parse(localStorage.getItem("mk")) || "";
+// let mk = JSON.parse(localStorage.getItem("mk")) || "";
 
 let userDetails = token ? jwt(token) : "";
 
 export const initialState = {
   userDetails: "" || userDetails,
-  mk: "" || mk,
+  // mk: "" || mk,
   token: "" || token,
   loading: false,
   errorMessage: null,
@@ -61,14 +61,14 @@ export const AuthReducer = (initialState, action) => {
         errorMessage: action.error,
       };
 
-    case "MK":
-      const masterkey = masterKey(action.payload);
-      const encoded = JSON.stringify(masterkey);
-      localStorage.setItem("mk", encoded);
-      return {
-        ...initialState,
-        mk: masterkey,
-      };
+    // case "MK":
+    //   const masterkey = masterKey(action.payload);
+    //   const encoded = JSON.stringify(masterkey);
+    //   localStorage.setItem("mk", encoded);
+    //   return {
+    //     ...initialState,
+    //     mk: masterkey,
+    //   };
 
     default:
       throw new Error(`Unhandled action type: ${action.type}`);

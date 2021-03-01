@@ -10,7 +10,7 @@ export const loginUser = async (dispatch, loginPayload) => {
     if (res.data) {
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
       localStorage.setItem("refresh", res.data.refresh);
-      dispatch({ type: "MK", payload: loginPayload.password });
+      // dispatch({ type: "MK", payload: loginPayload.password });
       return res.data;
     }
     dispatch({ type: "LOGIN_ERROR", error: res.errors });
@@ -24,7 +24,7 @@ export const loginUser = async (dispatch, loginPayload) => {
 export const logout = (dispatch) => {
   dispatch({ type: "LOGOUT" });
   localStorage.removeItem("refresh");
-  localStorage.removeItem("mk");
+  // localStorage.removeItem("mk");
   //   localStorage.removeItem("token");
 };
 

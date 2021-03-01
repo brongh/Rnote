@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from . import views
-from .models import Notes
+from .models import Notes, User
 from .serializers import NotesSerializer, UserSerializer, NotesUserSerializer, MyTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 
 
 class NotesViewSet(viewsets.ModelViewSet):

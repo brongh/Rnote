@@ -13,8 +13,8 @@ const SignUp = () => {
   const onSubmit = async (data) => {
     const key = data.password;
     const mk = await masterKey(key);
-    const input = { last_name: JSON.stringify(mk), ...data };
-    // console.log(JSON.parse(input.last_name));
+    const input = { mk: JSON.stringify(mk), ...data };
+    console.log(input);
     let res = await signUp(input);
     if (res.data) {
       history.push("/login");

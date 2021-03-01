@@ -11,7 +11,7 @@ import { encryptData } from "../encryption/action";
 
 const NoteDetail = ({ preloadedValues, close, type }) => {
   const authState = useAuthState();
-  const MK = authState.mk;
+  const MK = JSON.parse(authState.userDetails.mk);
   // const [details, setDetails] = useState({});
   const status = useNoteContext();
   const change = useChangeContext();

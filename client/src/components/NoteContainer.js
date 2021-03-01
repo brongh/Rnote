@@ -8,29 +8,28 @@ import NoteDetail from "./NoteDetail";
 const NoteContainer = ({ value }) => {
   const [noteData, setNoteData] = useState([]);
   const status = useNoteContext();
-  const { mk } = useAuthState();
+  const authState = useAuthState();
+  const MK = JSON.parse(authState.userDetails.mk);
+
   const contentStyle = {
     background: "rgba(255,255,255,.8)",
     width: "80%",
   };
 
   useEffect(() => {
-    console.table(value);
-    if (value !== undefined) {
+    if (value !== undefined && value.length > 0) {
       const { title, content } = value[0];
       const encrypted = { title, content };
 
       const crack = async (encrypted, mk) => {
-        console.log(encrypted);
+        // console.log(encrypted);
         const data = await decryptData(encrypted, mk);
-        console.log(data);
-        if (data.title === undefined || data.content === undefined) {
-          return setNoteData(value);
-        }
+        // console.log(data);
         setNoteData(data);
         return data;
       };
-      const data = crack(encrypted, mk);
+      crack(encrypted, MK);
+      console.table(noteData);
     } else {
       setNoteData(value);
     }

@@ -13,7 +13,7 @@ import { decryptData } from "../encryption/action";
 const Main = () => {
   const authState = useAuthState();
   const id = authState.userDetails.user_id;
-  const MK = authState.mk;
+  const MK = authState.userDetails.mk;
   const status = useNoteContext();
   const change = useChangeContext();
   const [data, setData] = useState();
