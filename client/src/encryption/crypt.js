@@ -3,12 +3,12 @@ const crypto = require("crypto");
 module.exports = {
   encrypt: function (text, masterkey) {
     const iv = crypto.randomBytes(12);
-    const salt = crypto.randomBytes(16);
+    // const salt = crypto.randomBytes(16);
 
-    const key = crypto.pbkdf2Sync(masterkey, salt, 100000, 32, "sha256");
-    console.log("key:", key);
+    // const key = crypto.pbkdf2Sync(masterkey, salt, 100000, 32, "sha256");
+    // console.log("key:", key);
 
-    const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
+    const cipher = crypto.createCipheriv("aes-256-gcm", masterkey.key, iv);
 
     const encrypted = Buffer.concat([
       cipher.update(text, "hex"),
@@ -17,7 +17,7 @@ module.exports = {
 
     const tag = cipher.getAuthTag();
 
-    return Buffer.concat([salt, iv, tag, encrypted]).toString("base64");
+    return Buffer.concat([masterkey.salt, iv, tag, encrypted]).toString("base64");
   },
 
   decrypt: function (encdata, masterkey) {

@@ -66,7 +66,7 @@ const NoteDetail = ({ value }) => {
               style={{ width: "100%" }}
               ref={register}
             >
-              {details.title}
+              {details.title ? details.title : null}
             </input>
           </div>
           <div style={{ height: "100%" }}>
@@ -78,7 +78,7 @@ const NoteDetail = ({ value }) => {
               style={{ width: "100%", height: "100%" }}
               ref={register}
             >
-              {details.content}
+              {details.content ? details.content : null}
             </textarea>
           </div>
         </form>

@@ -3,7 +3,9 @@ import { masterKey } from "../encryption/masterkey";
 
 let token = "";
 
-let mk = localStorage.getItem("mk") || "";
+let mkEncoded = localStorage.getItem("mk") || "";
+let mk = JSON.parse(mkEncoded);
+
 
 let userDetails = token ? jwt(token) : "";
 
@@ -13,7 +15,6 @@ export const initialState = {
   token: "" || token,
   loading: false,
   errorMessage: null,
-  noteID: "",
 };
 
 export const secondState = {
@@ -64,7 +65,8 @@ export const AuthReducer = (initialState, action) => {
 
     case "MK":
       const masterkey = masterKey(action.payload);
-      localStorage.setItem("mk", masterkey);
+      const encoded = JSON.stringify(masterkey);
+      localStorage.setItem("mk", encoded);
       return {
         ...initialState,
         mk: masterkey,
