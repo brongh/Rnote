@@ -54,7 +54,7 @@ const NoteDetail = ({ value }) => {
   }, [noteID]);
   return (
     <>
-      <div>
+      <div style={{ width: "500px", height: "400px" }}>
         <form onSubmit={handleSubmit(saveNote)}>
           <div
             style={{
@@ -85,11 +85,11 @@ const NoteDetail = ({ value }) => {
               style={{ width: "100%" }}
               ref={register}
             >
-              {details.title}
+              {/* {details.title} */}
             </input>
           </div>
           <label>Content</label>
-          <Controller name="content" as={ParseContent} control={control} />
+          <Controller name="content" as={ParseContent} control={control} value={details.content} />
         </form>
       </div>
     </>
