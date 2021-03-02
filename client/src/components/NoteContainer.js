@@ -3,106 +3,76 @@ import { Button, Card, CardColumns } from "react-bootstrap";
 import { Popup } from "reactjs-popup";
 import { useAuthState, useNoteContext } from "../context/context";
 import { decryptData } from "../encryption/action";
+import NoteCard from "./NoteCard";
 import NoteDetail from "./NoteDetail";
 
 const NoteContainer = ({ value }) => {
-  const [noteData, setNoteData] = useState([]);
-  const status = useNoteContext();
-  const authState = useAuthState();
-  const MK = JSON.parse(authState.userDetails.mk);
+    const [noteData, setNoteData] = useState([]);
+    const status = useNoteContext();
 
-  const contentStyle = {
-    background: "rgba(255,255,255,.8)",
-    width: "80%",
-  };
+    const contentStyle = {
+        background: "rgba(255,255,255,.8)",
+        width: "80%",
+    };
 
-  useEffect(() => {
-    if (value !== undefined && value.length > 0) {
-      const { title, content } = value[0];
-      const encrypted = { title, content };
 
-      const crack = async (encrypted, mk) => {
-        // console.log(encrypted);
-        const data = await decryptData(encrypted, mk);
-        // console.log(data);
-        setNoteData(data);
-        return data;
-      };
-      crack(encrypted, MK);
-      console.table(noteData);
-    } else {
-      setNoteData(value);
-    }
-  }, [status, value]);
+    useEffect(() => {
+        // if (value !== undefined && value.length > 0) {
+        //   const { title, content } = value[0];
+        //   const encrypted = { title, content };
 
-  return (
-    <>
-      <CardColumns>
-        <Card>
-          <Card.Body>
-            <Card.Title>Create New Note</Card.Title>
-            <Popup
-              trigger={<Button variant="success">Create</Button>}
-              modal={true}
-              overlayStyle={{ background: "rgba(255,255,255,0.5" }}
-              contentStyle={contentStyle}
-            >
-              {(close) => (
-                <div
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    border: "0.5px solid black",
-                    background: "rgba(0,0,0,0.8)",
-                  }}
-                >
-                  <NoteDetail close={close} type={"post"} />
-                  <Button onClick={() => close()}>close</Button>
-                </div>
-              )}
-            </Popup>
-          </Card.Body>
-        </Card>
-        {!noteData ? (
-          <p>Loading</p>
-        ) : (
-          noteData.map((note) => (
-            <Card key={note.id}>
-              <Card.Body>
-                <Card.Title>{note.title}</Card.Title>
-                <Card.Text>{note.content}</Card.Text>
-              </Card.Body>
-              <Popup
-                trigger={<Button variant="outline-success">Open Note</Button>}
-                modal={true}
-                overlayStyle={{ background: "rgba(255,255,255,0.5" }}
-                contentStyle={contentStyle}
-              >
-                {(close) => (
-                  <div
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      border: "0.5px solid black",
-                      background: "rgba(0,0,0,0.8)",
-                    }}
-                  >
-                    <NoteDetail
-                      preloadedValues={note}
-                      key={note.id}
-                      close={close}
-                      type={"edit"}
-                    />
-                    <Button onClick={() => close()}>close</Button>
-                  </div>
-                )}
-              </Popup>
-            </Card>
-          ))
-        )}
-      </CardColumns>
-    </>
-  );
+        //   const crack = async (encrypted, mk) => {
+        //     // console.log(encrypted);
+        //     const data = await decryptData(encrypted, mk);
+        //     // console.log(data);
+        //     setNoteData(data);
+        //     return data;
+        //   };
+        //   crack(encrypted, MK);
+        //   console.table(noteData);
+
+        setNoteData(value);
+
+    }, [status, value]);
+
+    return (
+        <>
+            <CardColumns>
+                <Card>
+                    <Card.Body>
+                        <Card.Title>Create New Note</Card.Title>
+                        <Popup
+                            trigger={<Button variant="success">Create</Button>}
+                            modal={true}
+                            overlayStyle={{ background: "rgba(255,255,255,0.5" }}
+                            contentStyle={contentStyle}
+                        >
+                            {(close) => (
+                                <div
+                                    style={{
+                                        height: "100%",
+                                        width: "100%",
+                                        border: "0.5px solid black",
+                                        background: "rgba(0,0,0,0.8)",
+                                    }}
+                                >
+                                    <NoteDetail close={close} type={"post"} />
+                                    <Button onClick={() => close()}>close</Button>
+                                </div>
+                            )}
+                        </Popup>
+                    </Card.Body>
+                </Card>
+                {!noteData ? (
+                    <p>Loading</p>
+                ) : (
+                        noteData.map((note) => (
+                            <NoteCard key={note.id} value={note} />
+                        ))
+                    )}
+            </CardColumns>
+        </>
+    );
 };
 
 export default NoteContainer;

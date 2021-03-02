@@ -36,7 +36,7 @@ module.exports = {
     decipher.setAuthTag(tag);
 
     const decrypted =
-      decipher.update(text, "binary", "hex") + decipher.final("hex");
+      decipher.update(text, "binary", "utf8") + decipher.final("utf8");
 
     return decrypted;
   },

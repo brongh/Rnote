@@ -38,13 +38,15 @@ const NoteDetail = ({ preloadedValues, close, type }) => {
     return res;
   };
 
-  const saveNote = async () => {
-    // const title = getValues("title");
-    // const content = getValues("content");
-    // const res = await encryptData({ title, content }, MK);
-    // const inputData = { user_id, ...res };
-    // const response = await editOneNote(id, inputData);
-    // console.error(response);
+  const saveNote = async (data) => {
+    const { id, user_id } = preloadedValues;
+
+
+    const enData = encryptData(data, MK);
+    const input = { user_id, ...enData }
+    const res = await editOneNote(id, input)
+    change({ type: "STATUS_CHANGE", payload: 5 });
+    console.log(res);
   };
 
   return (
