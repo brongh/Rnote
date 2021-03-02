@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import { homeButtonStyle, homeCardStyle } from "../components/style";
 import { useAuthState } from "../context/context";
 
 const Home = () => {
@@ -11,15 +12,15 @@ const Home = () => {
         <>
           <Card
             className="text-center bg-dark text-white"
-            style={{ width: "80%", height: "300px" }}
+            style={homeCardStyle}
           >
             <Card.Header>Probably the simplest note app ever</Card.Header>
             <Card.Body>
               <Card.Title>Please Sign up or Log in</Card.Title>
-              <LinkContainer to="/login">
+              <LinkContainer style={homeButtonStyle} to="/login">
                 <Button variant="primary">Log In</Button>
               </LinkContainer>
-              <LinkContainer to="/signup">
+              <LinkContainer style={homeButtonStyle} to="/signup">
                 <Button variant="primary">Sign Up</Button>
               </LinkContainer>
             </Card.Body>

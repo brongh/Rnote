@@ -56,7 +56,7 @@ const Main = () => {
 
   return (
     <div className="notepage">
-      <div>Add need post</div>
+      <div style={{ height: "20px" }}></div>
       <div>
         <NoteContainer value={data} />
       </div>

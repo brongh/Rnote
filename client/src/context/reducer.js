@@ -1,15 +1,11 @@
 import jwt from "jwt-decode";
-import { masterKey } from "../encryption/masterkey";
 
 let token = "";
-
-// let mk = JSON.parse(localStorage.getItem("mk")) || "";
 
 let userDetails = token ? jwt(token) : "";
 
 export const initialState = {
   userDetails: "" || userDetails,
-  // mk: "" || mk,
   token: "" || token,
   loading: false,
   errorMessage: null,
@@ -58,7 +54,7 @@ export const AuthReducer = (initialState, action) => {
       return {
         ...initialState,
         loading: false,
-        errorMessage: action.error,
+        errorMessage: JSON.parse(action.error.request.response),
       };
 
     // case "MK":

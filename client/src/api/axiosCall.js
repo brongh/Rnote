@@ -14,10 +14,11 @@ export const loginUser = async (dispatch, loginPayload) => {
       return res.data;
     }
     dispatch({ type: "LOGIN_ERROR", error: res.errors });
-    return;
+    return res;
   } catch (error) {
-    console.log(error);
+    console.log(error.request.response);
     dispatch({ type: "LOGIN_ERROR", error: error });
+    return JSON.parse(error.request.response);
   }
 };
 
@@ -49,8 +50,13 @@ export const getAccessToken = async (dispatch) => {
 };
 
 export const signUp = async (newUser) => {
-  let res = await axios.post(`${BASEURL}users/`, newUser);
-  return res;
+  try {
+    let res = await axios.post(`${BASEURL}users/`, newUser);
+    console.log(res);
+    return res;
+  } catch (error) {
+    return JSON.parse(error.request.response);
+  }
 };
 
 export const postNote = async (data) => {

@@ -33,6 +33,7 @@ const NoteDetail = ({ preloadedValues, close, type }) => {
     const input = { user_id, ...enData };
     const res = await postNote(input);
     change({ type: "STATUS_CHANGE", payload: 5 });
+    res && close();
     console.log(status);
     console.log(res);
     return res;
@@ -41,10 +42,9 @@ const NoteDetail = ({ preloadedValues, close, type }) => {
   const saveNote = async (data) => {
     const { id, user_id } = preloadedValues;
 
-
     const enData = encryptData(data, MK);
-    const input = { user_id, ...enData }
-    const res = await editOneNote(id, input)
+    const input = { user_id, ...enData };
+    const res = await editOneNote(id, input);
     change({ type: "STATUS_CHANGE", payload: 5 });
     console.log(res);
   };
@@ -76,7 +76,6 @@ const NoteDetail = ({ preloadedValues, close, type }) => {
                 >
                   delete
                 </Button>
-
               </>
             )}
 

@@ -30,11 +30,14 @@ const NavBar = () => {
             </>
           ) : null}
         </Nav>
+
         {userDetail.token ? (
-          <Button onClick={handleLogout}>Logout</Button>
+          <Button onClick={handleLogout} style={{ marginRight: "10px" }}>
+            Logout
+          </Button>
         ) : (
           <>
-            <LinkContainer to="/login">
+            <LinkContainer to="/login" style={{ marginRight: "10px" }}>
               <Button>Login</Button>
             </LinkContainer>
             <LinkContainer to="/signup">
