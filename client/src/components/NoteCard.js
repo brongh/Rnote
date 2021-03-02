@@ -16,7 +16,7 @@ const NoteCard = ({ value }) => {
 
     const contentStyle = {
         background: "rgba(255,255,255,.8)",
-        width: "80%",
+        width: "60%",
     };
 
     useEffect(() => {
@@ -26,7 +26,6 @@ const NoteCard = ({ value }) => {
         const crack = async (encrypted, mk) => {
             const data = await decryptData(encrypted, mk)
             const nData = { id, user_id, ...data }
-            console.log(nData)
             setOneNote(nData);
             return nData
         }
@@ -35,7 +34,7 @@ const NoteCard = ({ value }) => {
 
 
     return (
-        <Card>
+        <Card style={{ padding: "10px", paddingTop: "0", borderRadius: "15px" }}>
             <Card.Body>
                 <Card.Title>{oneNote.title}</Card.Title>
                 <Card.Text>{oneNote.content}</Card.Text>

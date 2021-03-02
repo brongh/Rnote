@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { deleteOneNote, editOneNote, postNote } from "../api/axiosCall";
@@ -76,9 +76,7 @@ const NoteDetail = ({ preloadedValues, close, type }) => {
                 >
                   delete
                 </Button>
-                <Button variant="success" style={{ margin: "2px 5px" }}>
-                  edit
-                </Button>
+
               </>
             )}
 
